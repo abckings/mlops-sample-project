@@ -1,0 +1,25 @@
+name: CI pipeline for Feature Branch
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.head_ref || github.ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  linting-checks:
+    runs-on: [self-hosted]
+    steps:
+      - name: Checkout repository.
+        uses: actions/checkout@v3
+
+      - name: Install python dependencies
+        shell: bash
+        run: pip install -r environment/linting-requirements.txt
+
+      - name: Run Linters
+        shell: bash
+        run: |
+          flake8
+          black --check .
+          isort --check-only .
