@@ -1,6 +1,6 @@
 name: CI pipeline for Feature Branch
 on:
-  pull_request:
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.head_ref || github.ref || github.run_id }}
